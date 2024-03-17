@@ -26,8 +26,8 @@ class HomeView extends StatelessWidget {
                     TextField(
                       controller: morseController,
                       decoration: InputDecoration(
-                          labelText: 'Enter text',
-                          hintText: 'Enter text',
+                          labelText: 'Enter morse code or english text',
+                          hintText: 'Enter morse code or english text',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -50,20 +50,9 @@ class HomeView extends StatelessWidget {
                     const SizedBox(height: 20.0),
                     ButtonWidget(
                       onPressed: () {
-                        context
-                            .read<HomeCubit>()
-                            .convertToEnglish(morseController.text);
+                        context.read<HomeCubit>().convert(morseController.text);
                       },
-                      label: 'Morse Code To English Text',
-                    ),
-                    const SizedBox(height: 20.0),
-                    ButtonWidget(
-                      onPressed: () {
-                        context
-                            .read<HomeCubit>()
-                            .convertToMorse(morseController.text);
-                      },
-                      label: 'English To Morse Code',
+                      label: 'Convert',
                     ),
                     const SizedBox(height: 20.0),
                     ButtonWidget(
@@ -74,15 +63,7 @@ class HomeView extends StatelessWidget {
                       label: 'Clear',
                     ),
                     if (state is HomeConvertState)
-                      ConvertedTextWidget(state: state),
-                    if (state is HomeFailureState)
-                      Center(
-                        child: Text(
-                          state.message,
-                          style: const TextStyle(
-                              fontSize: 20.0, color: Colors.red),
-                        ),
-                      ),
+                      ConvertedTextWidget(state: state)
                   ],
                 ),
               ),

@@ -15,9 +15,3 @@ class HomeErrorState extends HomeState {
 
   final String errorString;
 }
-
-class HomeFailureState extends HomeState {
-  HomeFailureState({required this.message});
-
-  final String message;
-}

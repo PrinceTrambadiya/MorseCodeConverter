@@ -10,47 +10,43 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeInitial());
   }
 
-  void convertToEnglish(String morseCode) {
-    if (morseCode.isNotEmpty) {
-      if (!isValidString(morseCode)) {
-        List<String> words = morseCode.split(RegExp('\\s{3}'));
-        String englishText = '';
-        String tempText = '';
-
-        for (String word in words) {
-          List<String> letters = word.split(' ');
-          for (String letter in letters) {
-            tempText += Consts.morseToEnglishMap[letter] ?? '';
-          }
-          tempText = tempText[0].toUpperCase() + tempText.substring(1);
-          englishText += '$tempText ';
-          tempText = '';
-        }
-        emit(HomeConvertState(convertedString: englishText.trim()));
+  void convert(String inputText) {
+    if (inputText.isNotEmpty) {
+      if (!isValidString(inputText)) {
+        convertToEnglish(inputText);
       } else {
-        emit(HomeFailureState(message: 'Invalid input'));
+        convertToMorse(inputText);
       }
     } else {
       emit(HomeErrorState(errorString: 'Please Enter some value'));
     }
   }
 
-  void convertToMorse(String englishText) {
-    if (englishText.isNotEmpty) {
-      if (isValidString(englishText)) {
-        List<String> words = englishText.toLowerCase().split('');
-        String morseCode = '';
+  void convertToEnglish(String morseCode) {
+    List<String> words = morseCode.split(RegExp('\\s{3}'));
+    String englishText = '';
+    String tempText = '';
 
-        for (String word in words) {
-          morseCode += '${Consts.englishToMorseMap[word]} ';
-        }
-        emit(HomeConvertState(convertedString: morseCode.trim()));
-      } else {
-        emit(HomeFailureState(message: 'Invalid input'));
+    for (String word in words) {
+      List<String> letters = word.split(' ');
+      for (String letter in letters) {
+        tempText += Consts.morseToEnglishMap[letter] ?? '';
       }
-    } else {
-      emit(HomeErrorState(errorString: 'Please Enter some value'));
+      tempText = tempText[0].toUpperCase() + tempText.substring(1);
+      englishText += '$tempText ';
+      tempText = '';
     }
+    emit(HomeConvertState(convertedString: englishText.trim()));
+  }
+
+  void convertToMorse(String englishText) {
+    List<String> words = englishText.toLowerCase().split('');
+    String morseCode = '';
+
+    for (String word in words) {
+      morseCode += '${Consts.englishToMorseMap[word]} ';
+    }
+    emit(HomeConvertState(convertedString: morseCode.trim()));
   }
 
   bool isValidString(String text) {
