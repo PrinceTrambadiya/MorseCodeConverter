@@ -49,19 +49,21 @@ class HomeView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20.0),
                     ButtonWidget(
-                      onPressed: () {
-                        context.read<HomeCubit>().convert(morseController.text);
-                      },
-                      label: 'Convert',
+                      onPressed: morseController.text.isNotEmpty
+                          ? (state is HomeConvertState)
+                              ? () {
+                                  context.read<HomeCubit>().resetState();
+                                  morseController.clear();
+                                }
+                              : () {
+                                  context
+                                      .read<HomeCubit>()
+                                      .convert(morseController.text);
+                                }
+                          : null,
+                      label: (state is HomeConvertState) ? 'Clear' : 'Convert',
                     ),
                     const SizedBox(height: 20.0),
-                    ButtonWidget(
-                      onPressed: () {
-                        context.read<HomeCubit>().resetState();
-                        morseController.clear();
-                      },
-                      label: 'Clear',
-                    ),
                     if (state is HomeConvertState)
                       ConvertedTextWidget(state: state)
                   ],

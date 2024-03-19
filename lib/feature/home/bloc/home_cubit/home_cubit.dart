@@ -26,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
     List<String> words = morseCode.split(RegExp('\\s{3}'));
     String englishText = '';
     String tempText = '';
-
+    // .... . .-.. .-.. ---   .-- --- .-. .-.. -..
     for (String word in words) {
       List<String> letters = word.split(' ');
       for (String letter in letters) {
@@ -44,7 +44,9 @@ class HomeCubit extends Cubit<HomeState> {
     String morseCode = '';
 
     for (String word in words) {
-      morseCode += '${Consts.englishToMorseMap[word]} ';
+      morseCode += '${getKeyFromValue(word)} ';
+      // morseCode += '${getKey(word)} ';
+      // morseCode += '${Consts.englishToMorseMap[word]} ';
     }
     emit(HomeConvertState(convertedString: morseCode.trim()));
   }
@@ -52,5 +54,21 @@ class HomeCubit extends Cubit<HomeState> {
   bool isValidString(String text) {
     RegExp morsePattern = RegExp(r'^[a-zA-Z0-9\s]*$');
     return morsePattern.hasMatch(text);
+  }
+
+  String getKey(String inputValue) {
+    String temp = '';
+    Consts.morseToEnglishMap.forEach((key, value) {
+      if (value == inputValue) {
+        temp = key;
+      }
+    });
+    return temp;
+  }
+
+  String? getKeyFromValue(String value) {
+    return Consts.morseToEnglishMap.keys.firstWhere(
+        (key) => Consts.morseToEnglishMap[key] == value,
+        orElse: () => "No key found");
   }
 }
