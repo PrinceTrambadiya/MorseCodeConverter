@@ -45,7 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     for (String word in words) {
       morseCode +=
-          '${Consts.morseToEnglishMap.keys.firstWhere((key) => Consts.morseToEnglishMap[key] == word, orElse: () => "No key found")} ';
+          '${Consts.morseToEnglishMap.keys.firstWhere((key) => Consts.morseToEnglishMap[key] == word, orElse: () => '')} ';
       // morseCode += '${getKey(word)} ';
       // morseCode += '${Consts.englishToMorseMap[word]} ';
     }
